@@ -1,0 +1,15 @@
+/dist/
+**/_metadata/
+/node_modules/
+/coverage/
+*.log
+*.crx
+*.pem
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/

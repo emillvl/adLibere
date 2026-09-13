@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.png binary
+*.gif binary
+lists/easylist.txt -text
+lists/easyprivacy.txt -text
+lists/adguard-base.txt -text
