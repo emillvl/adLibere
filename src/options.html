@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>adLibere · Dashboard</title><link rel="icon" type="image/png" href="icons/adlibere.png"><link rel="stylesheet" href="options.css"></head>
+<body><main>
+  <div class="brand"><img class="brand-logo" src="icons/adlibere.png" alt="adLibere eagle emblem" width="96" height="96"><p class="eyebrow">adLibere <span class="release">v2.0</span></p></div><h1>Keep the player yours.</h1>
+  <p>adLibere protects every site automatically. Network requests to ad, popunder and hijack networks are neutralized, playback overlays are concealed, and anti-adblock bait is defused. No site list to maintain.</p>
+  <section aria-labelledby="switch-heading"><h2 id="switch-heading">Protection</h2>
+    <label class="switch-row"><input type="checkbox" id="enabled"><span>Active on all sites</span></label>
+    <p id="status" role="status" aria-live="polite"></p>
+  </section>
+  <section aria-labelledby="stats-heading"><h2 id="stats-heading">Coverage</h2>
+    <ul>
+      <li><span>Static network rules (EasyList build)</span><strong id="static-rules">—</strong></li>
+      <li><span>Live refreshed rules</span><strong id="list-rules">—</strong></li>
+      <li><span>Active dynamic rules</span><strong id="dynamic-rules">—</strong></li>
+      <li><span>Filter list last updated</span><strong id="updated">—</strong></li>
+    </ul>
+  </section>
+  <section><h2>Maintenance</h2>
+    <div class="input-row">
+      <button id="refresh">Update lists now</button>
+      <button id="export" class="secondary">Export filter list</button>
+    </div>
+  </section>
+  <p class="note">The behavioral detector (overlay conceal, popup guard, bait defuser) is not part of the exported filter list — it runs only inside the extension. Some player menus, sign-in redirects, and scripted buttons may need a site-specific exception; the detector never removes nodes or blocks first-party playback.</p>
+</main><script src="core.js"></script><script src="options.js"></script></body></html>

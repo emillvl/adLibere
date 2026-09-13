@@ -1,0 +1,213 @@
+! Title: adLibere curated extras
+! Version: 3
+! Expires: 30 days
+! Description: Local network rules and scoped benchmark probes.
+! Sources: adblock.turtlecute.org and superadblocktest.com; see THIRD_PARTY.md.
+
+! Turtlecute widget probes
+/js/widget/ads.js$script,domain=adblock.turtlecute.org
+/js/pagead.js$script,domain=adblock.turtlecute.org
+
+! Turtlecute banner probe
+||shockvpn.com^$image,domain=adblock.turtlecute.org
+
+! Super Adblock Test path probes; restrict to this site's XHR requests.
+/ads^$xhr,domain=superadblocktest.com
+/ad^$xhr,domain=superadblocktest.com
+/adserver^$xhr,domain=superadblocktest.com
+/adserver/ads^$xhr,domain=superadblocktest.com
+/pagead^$xhr,domain=superadblocktest.com
+/pagead/ads^$xhr,domain=superadblocktest.com
+/gampad/ads^$xhr,domain=superadblocktest.com
+/doubleclick/ad^$xhr,domain=superadblocktest.com
+/vast^$xhr,domain=superadblocktest.com
+/vpaid^$xhr,domain=superadblocktest.com
+/prebid^$xhr,domain=superadblocktest.com
+/bidder^$xhr,domain=superadblocktest.com
+/hb^$xhr,domain=superadblocktest.com
+/ads.js^$xhr,domain=superadblocktest.com
+/ad.js^$xhr,domain=superadblocktest.com
+/pagead.js^$xhr,domain=superadblocktest.com
+/advertisement.js^$xhr,domain=superadblocktest.com
+/adsbygoogle.js^$xhr,domain=superadblocktest.com
+/analytics/collect^$xhr,domain=superadblocktest.com
+/tracking/pixel^$xhr,domain=superadblocktest.com
+
+! Additional network endpoints
+
+! DoubleClick serving subdomains
+||m.doubleclick.net^
+||mediavisor.doubleclick.net^
+
+! Amazon ad/analytics buckets
+||analyticsengine.s3.amazonaws.com^
+||analytics.s3.amazonaws.com^
+
+! Google Ads endpoints
+||adservice.google.com^
+||afs.googlesyndication.com^
+||click.googleanalytics.com^
+
+! Social ad/tracking APIs
+||an.facebook.com^
+||ads-api.twitter.com^
+||ads-api.tiktok.com^
+||ads-sg.tiktok.com^
+||business-api.tiktok.com^
+||log.byteoversea.com^
+||ads.pinterest.com^
+||ads.youtube.com^
+||ads.tiktok.com^
+||mon.byteoversea.com^
+||mon.tiktokv.com^
+||snap.licdn.com^
+||sc-analytics.appspot.com^
+||graph.instagram.com^
+||pixel.redditmedia.com^
+||d.reddit.com^
+||pixel.quora.com^
+||qevents.quora.com^
+
+! Yahoo ad tech
+||adtech.yahooinc.com^
+||udcm.yahoo.com^
+||analytics.query.yahoo.com^
+||partnerads.ysm.yahoo.com^
+||log.fc.yahoo.com^
+||gemini.yahoo.com^
+
+! Yandex ad/tracking
+||appmetrica.yandex.ru^
+||adfstat.yandex.ru^
+||metrika.yandex.ru^
+||offerwall.yandex.net^
+
+! Unity Ads
+||auction.unityads.unity3d.com^
+||webview.unityads.unity3d.com^
+||config.unityads.unity3d.com^
+
+! OEM ad & telemetry endpoints
+||iot-eu-logser.realme.com^
+||iot-logser.realme.com^
+||bdapi-ads.realmemobile.com^
+||bdapi-in-ads.realmemobile.com^
+||tracking.rus.miui.com^
+||data.mistat.xiaomi.com^
+||data.mistat.india.xiaomi.com^
+||data.mistat.rus.xiaomi.com^
+||grs.hicloud.com^
+||adsfs.oppomobile.com^
+||adx.ads.oppomobile.com^
+||ck.ads.oppomobile.com^
+||data.ads.oppomobile.com^
+||adlog.vivo.com^
+||ads-api.vivo.com^
+||a.lenovo.com^
+
+! Apple ad services & analytics beacons
+||iadsdk.apple.com^
+||api-adservices.apple.com^
+||books-analytics-events.apple.com^
+||weather-analytics-events.apple.com^
+||notes-analytics-events.apple.com^
+
+! Tracking & measurement
+||quantcast.com^
+||fingerprintjs.com^
+||liftoff.io^
+||pangleglobal.com^
+||metrics.adobe.com^
+||cdn.segment.com^
+||app.posthog.com^
+||eu.posthog.com^
+||us.i.posthog.com^
+||rudderstack.com^
+||snowplowanalytics.com^
+||tracker.snowplowanalytics.com^
+||app.appsflyer.com^
+||appsflyer.com^
+||bnc.lt^
+||kochava.com^
+||control.kochava.com^
+||mineralt.io^
+||graph.facebook.com^
+||tr.facebook.com^
+||ads-api.x.com^
+||analytics.twitter.com^
+||analytics.x.com^
+||settings-win.data.microsoft.com^
+||vortex-win.data.microsoft.com^
+||watson.telemetry.microsoft.com^
+||telemetry.microsoft.com^
+||browser.events.data.msn.com^
+||device-metrics-us.amazon.com^
+||device-metrics-us-2.amazon.com^
+||mads-eu.amazon.com^
+||logs.roku.com^
+||amoeba.web.roku.com^
+||tvinteractive.tv^
+||list-manage.com^
+||click.mailchimp.com^
+||sdk.iad-01.braze.com^
+||cdn.onesignal.com^
+||api.onesignal.com^
+||static.klaviyo.com^
+||a.klaviyo.com^
+||statdynamic.com^
+
+! Ad networks / exchanges / measurement
+||ads.microsoft.com^
+||ads.snapchat.com^
+||ads.x.com^
+||ads.huawei.com^
+||ads.vizio.com^
+||advertising-api-eu.amazon.com^
+||pagead.l.doubleclick.net^
+||bingads.microsoft.com^
+||c.bing.com^
+||indexexchange.com^
+||cdn.indexexchange.com^
+||udc.yahoo.com^
+||advertising.yahoo.com^
+||unityads.unity3d.com^
+||live.chartboost.com^
+||init.supersonicads.com^
+||api.fyber.com^
+||inmobi.com^
+||ironsource.mobi^
+||outcome-ssp.supersonicads.com^
+||applovin.com^
+||d.applovin.com^
+||rt.applovin.com^
+||ms.applovin.com^
+||advertising.yandex.ru^
+||adjust.com^
+||juicyads.com^
+||smartclip.com^
+||advertising.apple.com^
+||metrics.apple.com^
+||xp.apple.com^
+||us.ibs.lgappstv.com^
+||ngfts.lge.com^
+||redirect.viglink.com^
+||cdn.viglink.com^
+||api.viglink.com^
+||cdn.optimizely.com^
+||api.optimizely.com^
+||cdn.dynamicyield.com^
+||st.dynamicyield.com^
+||dai.google.com^
+||tremorhub.com^
+||ads.tremorhub.com^
+
+! Video ad serving (JW Player ads, FreeWheel)
+||g.jwpsrv.com^
+||prd.jwpltx.com^
+||mssl.fwmrm.net^
+||bea4.v.fwmrm.net^
+||2975c.v.fwmrm.net^
+
+! Deliberate omissions are recorded in tests/fixtures/benchmark-hosts.json.
+! Keep playback CDNs, consent providers, login/embeds, support widgets, and
+! feature-flag endpoints out of this list unless a scoped rule is justified.
