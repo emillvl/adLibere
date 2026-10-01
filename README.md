@@ -110,6 +110,8 @@ The source contains no analytics or browsing-history collection. Filter updates 
 
 The filter parser supports a subset of upstream list syntax. It does not import the full cosmetic-filter or scriptlet engines from those projects. Popup and overlay detection can miss ads or interfere with legitimate page elements. There is currently no per-site pause or exception editor.
 
+**Server-side / first-party-injected ads are not a comprehensive target.** When a publisher serves or proxies advertising through the same first-party infrastructure as ordinary site content, a browser extension may not have a reliable generic signal for separating the ad from legitimate resources without risking breakage. adLibere can still block such cases when there is clear, site-specific evidence and a narrowly scoped rule, but it does not claim universal coverage of server-side ad insertion or publisher-side proxying.
+
 ## Sources and licensing
 
 Bundled third-party data keeps its original attribution and license references. See [`THIRD_PARTY.md`](THIRD_PARTY.md) for the filter and benchmark sources.
