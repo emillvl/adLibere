@@ -1,4 +1,5 @@
 /dist/
+/release/
 **/_metadata/
 /node_modules/
 /coverage/

@@ -7,7 +7,10 @@
   "scripts": {
     "build": "node tools/build.mjs",
     "pretest": "npm run build",
-    "test": "node --test \"tests/*.test.mjs\""
+    "test": "node --test \"tests/*.test.mjs\"",
+    "release:validate": "node tools/validate.mjs dist",
+    "release:package": "node tools/release.mjs",
+    "test:browser": "node tools/browser-smoke.mjs"
   },
   "engines": {
     "node": ">=24"

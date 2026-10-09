@@ -12,7 +12,35 @@ A browser ad blocker with extra protection against streaming-site popups, overla
 - Handles common anti-adblock checks with local replacement resources, ad API stubs, and bait-element handling.
 - Provides a dashboard for pausing protection, refreshing lists, viewing rule counts, and exporting catalog filters.
 
-## Install locally
+## Download and install
+
+Download the versioned **`adLibere-vX.Y.Z.zip`** and its **`.zip.sha256`** file from [GitHub Releases](https://github.com/emillvl/adLibere/releases). Use the release asset rather than the source-code archives. Installing a release does not require Node.js.
+
+1. Extract the ZIP to a permanent folder. `manifest.json` must be directly inside that folder.
+2. In **Chrome 121 or later**, open `chrome://extensions` and turn on **Developer mode**.
+3. Choose **Load unpacked** and select the extracted folder.
+4. Reload open web pages. Click the adLibere icon to open its dashboard.
+
+For Microsoft Edge, use `edge://extensions` and the same extracted folder. See [Edge compatibility](docs/EDGE_COMPATIBILITY.md) for tested versions and store-submission considerations. Firefox support is not configured.
+
+### Verify the download
+
+Compare the ZIP's SHA-256 hash with the downloaded checksum file before extraction. On Windows PowerShell, for version 2.0.0:
+
+```powershell
+(Get-FileHash -LiteralPath .\adLibere-v2.0.0.zip -Algorithm SHA256).Hash
+Get-Content -LiteralPath .\adLibere-v2.0.0.zip.sha256
+```
+
+The hash must match exactly; uppercase and lowercase are equivalent. On Linux run `sha256sum -c adLibere-v2.0.0.zip.sha256`; on macOS run `shasum -a 256 -c adLibere-v2.0.0.zip.sha256` from the download folder. Substitute the actual version in each filename.
+
+### Manual updates
+
+GitHub installations do not update automatically. Download and verify the new release, close the browser, and replace **all contents** of the previously loaded folder with the new extracted contents. Keep that folder's path the same to retain the unpacked extension identity and local settings. Reopen the browser, click the extension's **Reload** button on the extensions page, and reload web pages. Keep a copy of the previous release if you need to roll back.
+
+Automatic filter-list refreshes update filter data; they do not update the extension's code or packaged static rules.
+
+## Build from source
 
 Requirements: **Node.js 24 or later** and **Chrome 121 or later**. The extension targets Chromium; Firefox support is not configured.
 
@@ -56,6 +84,33 @@ npm test
 
 `npm test` rebuilds the extension before running the test suite. After changing source files, reload the extension in `chrome://extensions`, then reload the page being tested.
 
+### Create a release package
+
+```sh
+npm run release:package
+```
+
+This builds `dist/`, runs the full automated test suite against that build, validates all packaged assets and rule budgets, creates `release/adLibere-vX.Y.Z.zip`, checks ZIP headers and CRCs, extracts it using an independent ZIP implementation, compares every extracted file with the build, and creates the `.zip.sha256` checksum. Any failed check stops packaging. Both output files are ignored by Git.
+
+Packaging needs Node.js 24 or later plus Windows PowerShell/.NET on Windows, or `unzip` on Linux/macOS. It adds no npm dependencies. Files use a stable sorted order, fixed ZIP timestamps and permissions, and normalized text line endings. The build contains no clock-derived metadata. Identical source inputs with the same Node.js/zlib version produce identical ZIP bytes; changed inputs or compression versions may change the checksum.
+
+To validate an extracted package separately:
+
+```sh
+node tools/validate.mjs /path/to/extracted-folder
+```
+
+To run functional smoke tests with a recent Chromium browser that supports the DevTools `Extensions.loadUnpacked` command:
+
+```sh
+npm run test:browser
+node tools/browser-smoke.mjs "/path/to/browser" "/path/to/extracted-folder"
+```
+
+The default executable is installed Chrome on Windows or `chromium` elsewhere; `ADLIBERE_BROWSER` can also select it. These tests use a temporary profile and package copy, local synthetic pages and an intercepted request; they test startup, blocking, dashboard/export, scripts, popups, cosmetics, overlays, protected content, and pause/resume. Live list downloads and real streaming playback are not covered. Browser tests are separate from the offline packaging gate because developers may not have a compatible browser installed.
+
+See [the release procedure](docs/RELEASING.md) before publishing a tag or uploading assets.
+
 The build recreates `dist/` from scratch. Edit `src/` and `lists/`; changes made directly in `dist/` will be overwritten. Generated files and browser caches are excluded from Git.
 
 ```text
@@ -71,12 +126,15 @@ adLibere/
 ├── lists/                 Upstream filter snapshots and local additions
 ├── tests/                 Automated tests and saved benchmark data
 ├── tools/                 Build and benchmark-fixture tools
+├── release/               Verified ZIP and checksum (ignored by Git)
 └── dist/                  Generated unpacked extension (ignored by Git)
 ```
 
 ### Tests
 
 The suite covers filter conversion, catalog rules, overlay decisions, generated bundles, manifest resources, dynamic-rule assembly, and saved benchmark requests. It runs offline with Node's built-in test runner.
+
+Third-party request restrictions are retained in generated DNR conditions. Unsupported request modifiers and parameter-removal rules are skipped rather than converted into broader blocking rules.
 
 Benchmark checks use an approximate request matcher and frozen input data. They are regression checks, not live browser scores or end-to-end playback tests. Some local rules specifically cover benchmark probe paths and are scoped to those benchmark domains.
 
