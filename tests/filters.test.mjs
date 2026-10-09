@@ -138,8 +138,27 @@ test('party constraints survive only on anchored patterns', () => {
   const anchored = core.parseFilterLine('||example.com^$3p', 1);
   assert.ok(anchored);
   assert.equal(anchored.action.type, 'block');
+  assert.equal(anchored.condition.domainType, 'thirdParty');
   assert.equal(core.parseFilterLine('|http*://*.*/*.$image,3p,domain=a2zupload.com', 1), null);
   assert.equal(core.parseFilterLine('*$ping,third-party', 1), null);
+});
+
+test('party restrictions remain in DNR conditions instead of becoming global', () => {
+  assert.equal(core.parseFilterLine('||example.com^$script,third-party', 1).condition.domainType, 'thirdParty');
+  assert.equal(core.parseFilterLine('||example.com^$script,1p', 1).condition.domainType, 'firstParty');
+  assert.equal(core.parseFilterLine('||example.com^$3p,1p', 1), null);
+});
+
+test('unsupported request and parameter modifiers never become playback blocks', () => {
+  for (const line of [
+    '/GetPlaybackResources?$xhr,removeparam=deviceAdInsertionTypeOverride,domain=amazon.com|primevideo.com',
+    '||void.nicopr.fr/rec$method=POST',
+    '||example.com^$script,from=site.com',
+    '||example.com^$script,to=example.com',
+    '||example.com^$removeparam',
+    '||example.com^$strict1p',
+    '||example.com^$strict3p',
+  ]) assert.equal(core.parseFilterLine(line, 1), null, line);
 });
 
 test('scoped floating allow rules keep their initiator scope', () => {

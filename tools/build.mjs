@@ -1,4 +1,4 @@
-import { cpSync, readFileSync, writeFileSync, mkdirSync, rmSync, lstatSync, existsSync } from 'node:fs';
+import { cpSync, readFileSync, writeFileSync, mkdirSync, rmSync, lstatSync, existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sourceDir = path.join(root, 'src');
 const outputDir = path.resolve(root, 'dist');
-const read = file => readFileSync(path.join(root, file), 'utf8');
-const readSource = file => readFileSync(path.join(sourceDir, file), 'utf8');
+const read = file => readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
+const readSource = file => readFileSync(path.join(sourceDir, file), 'utf8').replace(/\r\n/g, '\n');
 const write = (file, text) => writeFileSync(path.join(outputDir, file), text);
 const { version } = JSON.parse(read('package.json'));
 
@@ -29,6 +29,7 @@ for (const rule of converted) {
   const key = [
     rule.action.type,
     c.urlFilter,
+    c.domainType || '',
     (c.resourceTypes || []).join(','),
     (c.initiatorDomains || []).join(','),
     (c.excludedInitiatorDomains || []).join(','),
@@ -37,7 +38,7 @@ for (const rule of converted) {
   seen.add(key);
   rules.push(rule.action.type === 'redirect' ? { ...rule, action: { type: 'block' } } : rule);
 }
-rules.length = Math.min(rules.length, MAX_TOTAL);
+if (rules.length > MAX_TOTAL) throw new Error(`Static rule budget exceeded: ${rules.length} > ${MAX_TOTAL}`);
 
 // Clear only this project's output directory, never a linked directory.
 if (path.dirname(outputDir) !== root || path.basename(outputDir) !== 'dist') throw new Error('Invalid build output path.');
@@ -47,6 +48,23 @@ mkdirSync(path.join(outputDir, 'rulesets'), { recursive: true });
 for (const file of ['background.js', 'core.js', 'catalog.js', 'options.html', 'options.js', 'options.css', 'icons', 'resources']) {
   cpSync(path.join(sourceDir, file), path.join(outputDir, file), { recursive: true });
 }
+for (const file of ['LICENSE', 'THIRD_PARTY.md', 'licenses']) cpSync(path.join(root, file), path.join(outputDir, file), { recursive: true });
+write('filter-sources.json', `${JSON.stringify(LISTS.map((id, index) => ({
+  id,
+  source: `https://github.com/emillvl/adLibere/blob/v${version}/lists/${id}.txt`,
+  originalHeader: listSources[index].split('\n').slice(0, 16).filter(line => line.startsWith('!') || line.startsWith('[')),
+})), null, 2)}\n`);
+// Text assets produce the same bytes from Windows and Unix checkouts.
+function normalizeText(directory) {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const file = path.join(directory, entry.name);
+    if (entry.isDirectory()) normalizeText(file);
+    else if (/\.(js|html|css|json|txt|md)$/.test(entry.name) || entry.name === 'LICENSE') {
+      writeFileSync(file, readFileSync(file, 'utf8').replace(/\r\n/g, '\n'));
+    }
+  }
+}
+normalizeText(outputDir);
 const sets = [];
 for (let start = 0; start < rules.length; start += MAX_PER_SET) {
   const chunk = rules.slice(start, start + MAX_PER_SET).map((rule, index) => ({ ...rule, id: index + 1 }));
@@ -56,7 +74,6 @@ for (let start = 0; start < rules.length; start += MAX_PER_SET) {
 
 const info = {
   version,
-  generatedAt: new Date().toISOString(),
   staticRuleCount: rules.length,
   listRuleCount: converted.length,
   rulesetIds: sets.map(set => set.id),

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const read = file => readFileSync(path.join(root, file), 'utf8');
+export const read = file => readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
 export const readSource = file => read(`src/${file}`);
 export const readBuild = file => read(`dist/${file}`);
 export function loadCore() { vm.runInThisContext(readSource('core.js')); return globalThis.StreamGuardCore; }

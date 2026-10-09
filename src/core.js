@@ -34,7 +34,7 @@
   const REDIRECTS = { script: 'noop.js', image: '1x1.gif', stylesheet: 'noop.css', sub_frame: 'noop.html', xmlhttprequest: 'noop.json' };
   const TYPE_OPTIONS = new Set(['script', 'image', 'stylesheet', 'xmlhttprequest', 'xhr', 'subdocument', 'font', 'media', 'object', 'ping', 'beacon', 'websocket', 'other', 'all', 'document', 'doc']);
   // Drop rules with unsupported restrictions to avoid broadening their scope.
-  const UNSUPPORTED_OPTIONS = new Set(['popup', 'csp', 'elemhide', 'generichide', 'genericblock', 'specifichide', 'badfilter', 'match-case', 'denyallow', 'inline-script', 'inline-font', 'header', 'permissions', 'dnsrewrite', 'replace']);
+  const UNSUPPORTED_OPTIONS = new Set(['popup', 'csp', 'elemhide', 'generichide', 'genericblock', 'specifichide', 'badfilter', 'match-case', 'denyallow', 'inline-script', 'inline-font', 'header', 'permissions', 'dnsrewrite', 'replace', 'method', 'from', 'to', 'removeparam', 'extension', 'strict1p', 'strict3p']);
   const VALID_DOMAIN = /^[a-z0-9.-]+$/i;
 
   function splitOptions(line) {
@@ -105,8 +105,15 @@
       const negated = name.startsWith('~');
       const option = (negated ? name.slice(1) : name).toLowerCase();
       if (UNSUPPORTED_OPTIONS.has(option) || option === 'first-party') return null;
-      if (option === 'third-party' || option === '1p' || option === '3p' || option === 'strict1p' || option === 'strict3p') { partySeen = true; if (negated) return null; continue; }
-      if (option === 'important' || option === 'collapse' || option === 'empty' || option === 'redirect' || option === 'redirect-rule' || option === 'method' || option === 'from' || option === 'to' || option === 'removeparam' || option === 'extension') continue;
+      if (option === 'third-party' || option === '1p' || option === '3p') {
+        partySeen = true;
+        if (negated) return null;
+        const domainType = option === '1p' ? 'firstParty' : 'thirdParty';
+        if (condition.domainType && condition.domainType !== domainType) return null;
+        condition.domainType = domainType;
+        continue;
+      }
+      if (option === 'important' || option === 'collapse' || option === 'empty' || option === 'redirect' || option === 'redirect-rule') continue;
       if (option === 'domain') {
         domainSeen = true;
         for (const part of value.split('|')) {
