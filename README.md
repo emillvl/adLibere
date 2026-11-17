@@ -1,177 +1,143 @@
-<img src="src/icons/adlibere.png" alt="adLibere icon" width="80" height="80">
-
 # adLibere
 
-A browser ad blocker with extra protection against streaming-site popups, overlays, and common anti-adblock checks. Built with vanilla JavaScript and Chrome's Manifest V3 extension APIs.
+<img src="src/icons/adlibere.png" alt="adLibere’s gold eagle emblem" width="104" height="104" align="right">
 
-## Features
+**Keep the player yours.**
 
-- Filters network requests using bundled EasyList, EasyPrivacy, AdGuard Base, and local rules.
-- Blocks known ad destinations in popup links and supported navigation events.
-- Detects overlays around video playback and hides known ad containers.
-- Handles common anti-adblock checks with local replacement resources, ad API stubs, and bait-element handling.
-- Provides a dashboard for pausing protection, refreshing lists, viewing rule counts, and exporting catalog filters.
+adLibere blocks ads and trackers in Chromium and pays extra attention to the
+things that get between you and a video: popunders, playback overlays, and common
+anti-adblock checks.
 
-## Download and install
+[**Download adLibere 2.0.0**](https://github.com/emillvl/adLibere/releases/download/v2.0.0/adLibere-v2.0.0.zip)
+· [SHA-256 checksum](https://github.com/emillvl/adLibere/releases/download/v2.0.0/adLibere-v2.0.0.zip.sha256)
+· [Install instructions](#install)
+· [Release notes](https://github.com/emillvl/adLibere/releases/tag/v2.0.0)
 
-Download the versioned **`adLibere-vX.Y.Z.zip`** and its **`.zip.sha256`** file from [GitHub Releases](https://github.com/emillvl/adLibere/releases). Use the release asset rather than the source-code archives. Installing a release does not require Node.js.
+## The interruption isn’t always a request
 
-1. Extract the ZIP to a permanent folder. `manifest.json` must be directly inside that folder.
-2. In **Chrome 121 or later**, open `chrome://extensions` and turn on **Developer mode**.
-3. Choose **Load unpacked** and select the extracted folder.
-4. Reload open web pages. Click the adLibere icon to open its dashboard.
+![An annotated video player showing three points of intervention: ad and tracker requests, unwanted tabs, and overlays on the page.](docs/images/adlibere-player-cutaway.svg)
 
-For Microsoft Edge, use `edge://extensions` and the same extracted folder. See [Edge compatibility](docs/EDGE_COMPATIBILITY.md) for tested versions and store-submission considerations. Firefox support is not configured.
+- **At the network.** Chrome’s Manifest V3 filtering applies rules built from
+  EasyList, EasyPrivacy, AdGuard Base, and local additions.
+- **At the click.** Popup protection checks links and supported navigation for
+  known ad destinations, including popunders.
+- **On the page.** Scripts hide matching ad containers and playback overlays.
+  Local replacement resources, ad API stubs, and bait handling cover some
+  anti-adblock checks.
 
-### Verify the download
+## Install
 
-Compare the ZIP's SHA-256 hash with the downloaded checksum file before extraction. On Windows PowerShell, for version 2.0.0:
+Use the versioned **`adLibere-vX.Y.Z.zip`** and its **`.zip.sha256`** file
+from [GitHub Releases](https://github.com/emillvl/adLibere/releases).
+The **Source code** archives are not installable builds. Node.js is not required.
+
+1. Verify the ZIP’s checksum using the commands below, then extract it to a
+   permanent folder with `manifest.json` directly inside.
+2. In **Chrome 121 or later**, open `chrome://extensions` and turn on
+   **Developer mode**.
+3. Choose **Load unpacked** and select the extracted folder. Reload open pages,
+   then click the adLibere icon to open the dashboard.
+
+For Microsoft Edge, use `edge://extensions` and the same extracted folder.
+See [tested browser versions and limits](docs/EDGE_COMPATIBILITY.md).
+Firefox support is not configured.
+
+<details>
+<summary><strong>Verify the ZIP before opening it</strong></summary>
+
+From your downloads folder, compare the ZIP hash with its checksum file.
+Substitute the version you downloaded in each command.
+
+**Windows PowerShell**
 
 ```powershell
 (Get-FileHash -LiteralPath .\adLibere-v2.0.0.zip -Algorithm SHA256).Hash
 Get-Content -LiteralPath .\adLibere-v2.0.0.zip.sha256
 ```
 
-The hash must match exactly; uppercase and lowercase are equivalent. On Linux run `sha256sum -c adLibere-v2.0.0.zip.sha256`; on macOS run `shasum -a 256 -c adLibere-v2.0.0.zip.sha256` from the download folder. Substitute the actual version in each filename.
+The hashes must match. Letter case does not matter.
 
-### Manual updates
+**Linux**
 
-GitHub installations do not update automatically. Download and verify the new release, close the browser, and replace **all contents** of the previously loaded folder with the new extracted contents. Keep that folder's path the same to retain the unpacked extension identity and local settings. Reopen the browser, click the extension's **Reload** button on the extensions page, and reload web pages. Keep a copy of the previous release if you need to roll back.
+```sh
+sha256sum -c adLibere-v2.0.0.zip.sha256
+```
 
-Automatic filter-list refreshes update filter data; they do not update the extension's code or packaged static rules.
+**macOS**
 
-## Build from source
+```sh
+shasum -a 256 -c adLibere-v2.0.0.zip.sha256
+```
 
-Requirements: **Node.js 24 or later** and **Chrome 121 or later**. The extension targets Chromium; Firefox support is not configured.
+</details>
 
-1. Download or clone this repository and open a terminal in its folder.
-2. Build the extension:
+### Update an unpacked copy
 
-   ```sh
-   npm run build
-   ```
+GitHub installs do not update the extension automatically. Download and verify
+the new ZIP, close the browser, and replace **all contents** of the already
+loaded folder with the new extracted files. Keep the same folder path to retain
+the unpacked extension identity and settings. Reopen the browser, click
+**Reload** on the extension card, and refresh affected pages. Keep the last
+working ZIP if you want the option to roll back.
 
-   There are no npm dependencies to install. The build uses the filter snapshots in `lists/` and does not need a network connection.
+## At the controls
 
-3. Open `chrome://extensions` and turn on **Developer mode**.
-4. Choose **Load unpacked** and select the generated **`dist/`** folder.
-5. Reload any open pages you want to protect. Click the extension icon to open its dashboard.
-
-Load `dist/`, not the repository root or `src/`. If you previously loaded an older copy from the repository root, remove that unpacked copy and load `dist/` instead.
-
-## Using adLibere
-
-Protection is enabled by default on supported web pages. The dashboard provides:
-
-| Control | What it does |
+| Dashboard control | What it does |
 | --- | --- |
-| Active on all sites | Enables or pauses protection globally. Reload existing pages afterward to apply the change to injected page scripts. |
-| Update lists now | Downloads fresh filter lists and updates the dynamic rules that fit the current rule budget. |
-| Export filter list | Saves the catalog's network and site rules as `adlibere.txt`. |
+| **Active on all sites** | Pauses or resumes protection globally. Reload open pages so the change reaches scripts already injected. |
+| **Update lists now** | Downloads fresh filter data and applies the dynamic rules that fit the browser’s rule budget. |
+| **Export filter list** | Saves catalog network and site rules as `adlibere.txt`. It does not export the bundled lists or protection scripts. |
 
-The extension checks for list updates at startup and on a 12-hour alarm. Automatic downloads are skipped when the saved lists are less than 24 hours old.
+Protection starts on. adLibere checks for filter updates at startup and every
+12 hours, skipping automatic downloads while the saved lists are less than
+24 hours old. Refreshes only update dynamic filter data. They neither replace
+packaged static rules and popup patterns nor update extension code. The
+dashboard can show more downloaded rules than active dynamic rules.
 
-The packaged static rules and popup patterns are regenerated by `npm run build`. Live refreshes update a limited dynamic-rule slice; they do not replace the packaged rulesets. The dashboard's downloaded-rule count can therefore be larger than its active dynamic-rule count.
+The catalog export uses uBlock Origin syntax for redirects and scriptlets.
+Other blockers may not support those entries.
 
-The exported list contains catalog rules. It does not include the full bundled lists or the extension's popup, overlay, and bait-handling code. Redirect resources and scriptlets use uBlock Origin syntax; other blockers may not support them.
+### If a site misbehaves
 
-## Development
+Pause protection, then reload the page and check whether the player, captions,
+menu, or sign-in flow works again. There is no per-site pause or exception
+editor. If the problem only happens with protection on, [open an issue](https://github.com/emillvl/adLibere/issues)
+with the URL, browser and extension versions, and steps to reproduce it.
 
-```sh
-npm run build
-npm test
-```
+adLibere supports a subset of upstream filter syntax. Some ads are delivered
+through the same infrastructure as the content, so blocking them
+indiscriminately can break playback. Overlay detection can miss ads or
+misidentify site controls. The release’s browser smoke tests use synthetic
+pages, not live streaming services. See the
+[compatibility report](docs/EDGE_COMPATIBILITY.md) for scope and shared rule
+budget limits.
 
-`npm test` rebuilds the extension before running the test suite. After changing source files, reload the extension in `chrome://extensions`, then reload the page being tested.
+## What stays local
 
-### Create a release package
+Filtering and page inspection happen in the browser. Settings and downloaded
+rules stay in local extension storage. There is no adLibere account,
+developer-operated backend, analytics, or browsing-history collection. List
+refreshes contact the filter providers directly.
 
-```sh
-npm run release:package
-```
-
-This builds `dist/`, runs the full automated test suite against that build, validates all packaged assets and rule budgets, creates `release/adLibere-vX.Y.Z.zip`, checks ZIP headers and CRCs, extracts it using an independent ZIP implementation, compares every extracted file with the build, and creates the `.zip.sha256` checksum. Any failed check stops packaging. Both output files are ignored by Git.
-
-Packaging needs Node.js 24 or later plus Windows PowerShell/.NET on Windows, or `unzip` on Linux/macOS. It adds no npm dependencies. Files use a stable sorted order, fixed ZIP timestamps and permissions, and normalized text line endings. The build contains no clock-derived metadata. Identical source inputs with the same Node.js/zlib version produce identical ZIP bytes; changed inputs or compression versions may change the checksum.
-
-To validate an extracted package separately:
-
-```sh
-node tools/validate.mjs /path/to/extracted-folder
-```
-
-To run functional smoke tests with a recent Chromium browser that supports the DevTools `Extensions.loadUnpacked` command:
-
-```sh
-npm run test:browser
-node tools/browser-smoke.mjs "/path/to/browser" "/path/to/extracted-folder"
-```
-
-The default executable is installed Chrome on Windows or `chromium` elsewhere; `ADLIBERE_BROWSER` can also select it. These tests use a temporary profile and package copy, local synthetic pages and an intercepted request; they test startup, blocking, dashboard/export, scripts, popups, cosmetics, overlays, protected content, and pause/resume. Live list downloads and real streaming playback are not covered. Browser tests are separate from the offline packaging gate because developers may not have a compatible browser installed.
-
-See [the release procedure](docs/RELEASING.md) before publishing a tag or uploading assets.
-
-The build recreates `dist/` from scratch. Edit `src/` and `lists/`; changes made directly in `dist/` will be overwritten. Generated files and browser caches are excluded from Git.
-
-```text
-adLibere/
-├── src/                   Extension source, dashboard, icons, and resources
-│   ├── background.js      List refreshes, rules, and script registration
-│   ├── core.js            Filter parsing and shared decision logic
-│   ├── catalog.js         Network rules and site configuration
-│   ├── main.js            Page-level popup and anti-adblock handling
-│   ├── content.js         DOM observation and cosmetic filtering
-│   ├── manifest.json      Source manifest; rulesets are added during the build
-│   └── options.*          Dashboard markup, styles, and behavior
-├── lists/                 Upstream filter snapshots and local additions
-├── tests/                 Automated tests and saved benchmark data
-├── tools/                 Build and benchmark-fixture tools
-├── release/               Verified ZIP and checksum (ignored by Git)
-└── dist/                  Generated unpacked extension (ignored by Git)
-```
-
-### Tests
-
-The suite covers filter conversion, catalog rules, overlay decisions, generated bundles, manifest resources, dynamic-rule assembly, and saved benchmark requests. It runs offline with Node's built-in test runner.
-
-Third-party request restrictions are retained in generated DNR conditions. Unsupported request modifiers and parameter-removal rules are skipped rather than converted into broader blocking rules.
-
-Benchmark checks use an approximate request matcher and frozen input data. They are regression checks, not live browser scores or end-to-end playback tests. Some local rules specifically cover benchmark probe paths and are scoped to those benchmark domains.
-
-To regenerate the benchmark fixture from downloaded source files:
-
-```sh
-node tools/extract-benchmarks.mjs /path/to/d3host.txt /path/to/adblock.js
-```
-
-Source links are recorded in [`tests/fixtures/benchmark-hosts.json`](tests/fixtures/benchmark-hosts.json).
-
-### Making changes
-
-- Add local filter rules to `lists/adlibere-extra.txt`; retain upstream snapshots and their attribution headers.
-- Keep network-specific rules and their source references in `src/catalog.js`.
-- Add a regression case when changing filter or detection behavior, then run `npm test`.
-- When reporting a broken site, include the page URL, browser and extension versions, reproduction steps, and whether pausing protection and reloading resolves it.
-
-## Permissions and data
-
-| Permission | Purpose |
+| Permission | Why it’s needed |
 | --- | --- |
-| `declarativeNetRequest` | Apply network blocking and redirect rules. |
-| `scripting` and `<all_urls>` | Register protection scripts on supported web pages and their frames. |
-| `storage` and `unlimitedStorage` | Keep settings, downloaded rules, and update metadata locally. |
-| `alarms` | Schedule filter-list refresh checks. |
+| `declarativeNetRequest` | Apply browser network block and redirect rules. |
+| `scripting` and `<all_urls>` | Run protection scripts on supported pages and frames. |
+| `storage` and `unlimitedStorage` | Store settings, downloaded filters, and update metadata. |
+| `alarms` | Schedule checks for filter updates. |
 
-The source contains no analytics or browsing-history collection. Filter updates contact the list providers directly. Settings and downloaded filters are stored in the browser's local extension storage.
+[Read the privacy policy](PRIVACY.md).
 
-## Limitations
+## Under the hood
 
-The filter parser supports a subset of upstream list syntax. It does not import the full cosmetic-filter or scriptlet engines from those projects. Popup and overlay detection can miss ads or interfere with legitimate page elements. There is currently no per-site pause or exception editor.
+With **Node.js 24 or later**, run `npm run build` to generate the loadable
+`dist/` folder, or run `npm test` to rebuild and run the offline suite. There
+are no npm dependencies to install.
 
-Ads served or proxied through the same infrastructure as a site's content can be difficult to distinguish from legitimate resources. adLibere can block some of these ads with site-specific rules, but a broad rule may break the page. It does not cover every form of server-side ad insertion or publisher-side proxying.
+[Development guide](docs/DEVELOPMENT.md)
+· [Release procedure](docs/RELEASING.md)
+· [Edge compatibility](docs/EDGE_COMPATIBILITY.md)
 
-## Sources and licensing
-
-Bundled third-party data keeps its original attribution and license references. See [`THIRD_PARTY.md`](THIRD_PARTY.md) for the filter and benchmark sources.
-
-adLibere's source code is licensed under the MIT License; see `LICENSE`. Bundled third-party data remains subject to its upstream terms.
+Source code is licensed under the [MIT License](LICENSE). Bundled filter
+and benchmark data retain their upstream terms and attribution. See
+[third-party notices](THIRD_PARTY.md).
