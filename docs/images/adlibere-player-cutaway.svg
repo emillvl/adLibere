@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="382" viewBox="0 0 900 382" role="img" aria-labelledby="title desc">
+  <title id="title">Where adLibere steps in</title>
+  <desc id="desc">A cutaway of a browser video player. Callouts mark network requests, unwanted new tabs, and ads or overlays in front of the player. The playback controls remain visible.</desc>
+  <defs>
+    <linearGradient id="board" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#131F30"/>
+      <stop offset="1" stop-color="#0D1724"/>
+    </linearGradient>
+    <linearGradient id="sky" x2="0" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#2E5269"/>
+      <stop offset="1" stop-color="#172F43"/>
+    </linearGradient>
+    <pattern id="grid" width="18" height="18" patternUnits="userSpaceOnUse">
+      <path d="M18 0H0v18" fill="none" stroke="#ADC3D8" stroke-opacity=".08"/>
+    </pattern>
+    <clipPath id="screen">
+      <rect x="54" y="136" width="411" height="154" rx="7"/>
+    </clipPath>
+  </defs>
+
+  <rect x=".5" y=".5" width="899" height="381" rx="15" fill="url(#board)" stroke="#344B63"/>
+  <path d="M22 63h856M22 337h856" stroke="#35495F"/>
+  <path d="M22 63h499v274H22z" fill="url(#grid)"/>
+  <path d="M522 64v272" stroke="#35495F"/>
+  <g font-family="system-ui, Segoe UI, sans-serif">
+    <text x="32" y="41" fill="#85DFC4" font-size="13" font-weight="750" letter-spacing="2">FIG. 01</text>
+    <text x="128" y="41" fill="#D1DFEA" font-size="13" font-weight="650" letter-spacing="1.65">ANATOMY OF AN INTERRUPTION</text>
+
+    <!-- Synthetic browser and video player -->
+    <rect x="42" y="87" width="435" height="238" rx="12" fill="#182739" stroke="#5B738B"/>
+    <path d="M43 123h433" stroke="#425971"/>
+    <g fill="#647D94">
+      <circle cx="61" cy="105" r="3.3"/>
+      <circle cx="73" cy="105" r="3.3"/>
+      <circle cx="85" cy="105" r="3.3"/>
+    </g>
+    <rect x="105" y="95" width="353" height="20" rx="5" fill="#101C2C"/>
+    <path d="M116 105h7m-3.5-3.5v7" stroke="#7893A9" stroke-linecap="round"/>
+    <text x="130" y="109" fill="#B6C8DB" font-family="monospace" font-size="11">player.example</text>
+
+    <g clip-path="url(#screen)">
+      <rect x="54" y="136" width="411" height="154" fill="url(#sky)"/>
+      <circle cx="170" cy="176" r="18" fill="#B6D7CF"/>
+      <path d="M51 245l70-36 35 16 75-70 51 43 28-18 59 54 34-15 64 36v40H51z" fill="#5A8291"/>
+      <path d="M148 231l83-76 51 43-34-10-16-12-15 15-10-4z" fill="#C0D4D7"/>
+      <path d="M51 268l105-26 64 12 74-37 47 16 40-11 86 30v40H51z" fill="#2C5363"/>
+      <path d="M51 274l103-15 69 13 49-11 44 9 47-12 104 15v20H51z" fill="#203E50"/>
+      <path d="M71 272c55-9 68-8 115-3m132 10c47-12 74-11 127-9" fill="none" stroke="#79A9AF" stroke-opacity=".45"/>
+    </g>
+
+    <path d="M56 297h407" stroke="#445D73" stroke-width="3" stroke-linecap="round"/>
+    <path d="M56 297h123" stroke="#85DFC4" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="179" cy="297" r="3.5" fill="#85DFC4"/>
+    <path d="M61 310l7 4-7 4z" fill="#D8E6ED"/>
+    <path d="M78 313h7l4-3v8l-4-3h-7z" fill="#A1B6CA"/>
+    <path d="M447 309h-5v4m12-4h5v4m0 4v4h-5m-7 0h-5v-4" fill="none" stroke="#A1B6CA" stroke-linecap="round"/>
+
+    <!-- Illustrative interference and leader lines -->
+    <rect x="330" y="95" width="124" height="20" rx="5" fill="#1C373A" stroke="#558D85"/>
+    <text x="341" y="109" fill="#A2E7D2" font-family="monospace" font-size="10" letter-spacing=".5">AD REQUEST</text>
+    <path d="M454 105h74l22-6h8" fill="none" stroke="#85DFC4" stroke-width="1.25"/>
+    <circle cx="454" cy="105" r="3.5" fill="#85DFC4"/>
+
+    <path d="M399 143h69a7 7 0 0 1 7 7v13h-76a6 6 0 0 1-6-6v-8a6 6 0 0 1 6-6z" fill="#3D2A35" stroke="#D894A7" stroke-dasharray="4 3"/>
+    <text x="402" y="157" fill="#F7BAC7" font-family="monospace" font-size="10">POPUNDER</text>
+    <path d="M475 153h28l35 29h20" fill="none" stroke="#EDACBC" stroke-width="1.25"/>
+    <circle cx="475" cy="153" r="3.5" fill="#EDACBC"/>
+
+    <rect x="312" y="201" width="116" height="62" rx="7" fill="#392D28" fill-opacity=".9" stroke="#EDC185" stroke-dasharray="5 4"/>
+    <path d="M325 217h16v11h-16zm4 7 3-3 5 4" fill="none" stroke="#EDC185" stroke-linejoin="round"/>
+    <text x="325" y="249" fill="#F4CD96" font-family="monospace" font-size="10" letter-spacing=".35">AD OVERLAY</text>
+    <path d="M428 232h73l37 33h20" fill="none" stroke="#EDC185" stroke-width="1.25"/>
+    <circle cx="428" cy="232" r="3.5" fill="#EDC185"/>
+
+    <!-- Legend -->
+    <g font-size="12" font-weight="750" text-anchor="middle">
+      <rect x="557" y="86" width="29" height="26" rx="6" fill="#1E383F" stroke="#4A8A82"/>
+      <text x="571.5" y="103.5" fill="#9EEAD1">01</text>
+      <rect x="557" y="169" width="29" height="26" rx="6" fill="#3C2835" stroke="#946477"/>
+      <text x="571.5" y="186.5" fill="#F7BAC7">02</text>
+      <rect x="557" y="252" width="29" height="26" rx="6" fill="#3C312A" stroke="#A48158"/>
+      <text x="571.5" y="269.5" fill="#F4CD96">03</text>
+    </g>
+    <g fill="#E6EDF5" font-size="19" font-weight="720">
+      <text x="600" y="104">Network requests</text>
+      <text x="600" y="187">Unwanted tabs</text>
+      <text x="600" y="270">The page itself</text>
+    </g>
+    <g fill="#B7C8DA" font-size="14">
+      <text x="600" y="127">Block matching ads and trackers</text>
+      <text x="600" y="146">with browser filter rules.</text>
+      <text x="600" y="210">Guard against known ad destinations</text>
+      <text x="600" y="229">in links and supported navigation.</text>
+      <text x="600" y="293">Hide matching ad containers and</text>
+      <text x="600" y="312">overlays, including around video.</text>
+    </g>
+
+    <text x="32" y="363" fill="#B1C3D5" font-family="monospace" font-size="11" letter-spacing="1.1">ILLUSTRATION / NOT A LIVE BROWSER TEST</text>
+  </g>
+</svg>
